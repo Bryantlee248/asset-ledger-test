@@ -1,7 +1,18 @@
 {
   "schema_version": 1,
-  "project": { "id": "asset-ledger-test", "name": "Asset Ledger Test", "governance_level": "L1", "lifecycle": "poc" },
-  "state": { "current_gate": "G0", "active_work_items": ["W-001"], "next_work_item": "W-001" },
+  "project": {
+    "id": "asset-ledger-test",
+    "name": "Asset Ledger Test",
+    "governance_level": "L1",
+    "lifecycle": "poc"
+  },
+  "state": {
+    "current_gate": "G0",
+    "active_work_items": [
+      "W-001"
+    ],
+    "next_work_item": "W-001"
+  },
   "authority": {
     "governance": "GOVERNANCE.md",
     "roadmap": "ROADMAP.md",
@@ -9,37 +20,85 @@
     "worklog": "WORKLOG.md",
     "human_authorizer": "Bryantlee248"
   },
-  "roles": { "architecture": "架构AI", "delivery": ["实施AI"], "verifier": "验证AI" },
-  "enforcement": { "file_ownership": true },
+  "roles": {
+    "architecture": "架构AI",
+    "delivery": [
+      "实施AI"
+    ],
+    "verifier": "验证AI"
+  },
+  "enforcement": {
+    "file_ownership": true
+  },
   "effective": {
     "decisions": [
-      { "id": "D-001", "status": "accepted", "supersedes": [] },
-      { "id": "D-002", "status": "accepted", "supersedes": [] },
-      { "id": "D-003", "status": "accepted", "supersedes": [] }
+      {
+        "id": "D-001",
+        "status": "accepted",
+        "supersedes": []
+      },
+      {
+        "id": "D-002",
+        "status": "accepted",
+        "supersedes": []
+      },
+      {
+        "id": "D-003",
+        "status": "accepted",
+        "supersedes": []
+      }
     ],
     "work_packages": [
       {
         "id": "IWP-001",
         "roadmap_id": "W-001",
-        "status": "READY",
-        "approval": "",
+        "status": "APPROVED",
+        "approval": "PR#3",
         "primary": "实施AI",
         "verifier": "验证AI",
         "contributors": [],
         "integrator": null,
         "file_ownership": [
-          { "owner": "实施AI", "paths": ["src/api/", "src/web/", "test/", "package.json"] }
+          {
+            "owner": "实施AI",
+            "paths": [
+              "src/api/",
+              "src/web/",
+              "test/",
+              "package.json"
+            ]
+          }
         ]
       }
     ],
     "artifacts": []
   },
   "gates": [
-    { "id": "G0", "status": "planned", "approval": null },
-    { "id": "G1", "status": "planned", "approval": null },
-    { "id": "G2", "status": "planned", "approval": null },
-    { "id": "G3", "status": "planned", "approval": null },
-    { "id": "G4", "status": "planned", "approval": null }
+    {
+      "id": "G0",
+      "status": "planned",
+      "approval": null
+    },
+    {
+      "id": "G1",
+      "status": "planned",
+      "approval": null
+    },
+    {
+      "id": "G2",
+      "status": "planned",
+      "approval": null
+    },
+    {
+      "id": "G3",
+      "status": "planned",
+      "approval": null
+    },
+    {
+      "id": "G4",
+      "status": "planned",
+      "approval": null
+    }
   ],
   "superseded": []
 }
