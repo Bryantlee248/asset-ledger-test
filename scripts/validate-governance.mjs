@@ -236,27 +236,51 @@ if (args.ci && m) {
   else if (process.env.PR_BODY) prBody = process.env.PR_BODY;
   else if (process.env.PR_BODY_FILE) prBody = readFileSync(resolve(process.env.PR_BODY_FILE), 'utf8');
 
-  const controlPlane = new Set(['PROJECT.json', m.authority?.governance, m.authority?.roadmap, m.authority?.decisions, m.authority?.worklog].filter(Boolean));
   const norm = (p) => String(p).replace(/\\/g, '/').replace(/^\.\//, '');
+  const authorityDocs = new Set([m.authority?.governance, m.authority?.roadmap, m.authority?.decisions, m.authority?.worklog].filter(Boolean));
+  const controlPlane = new Set(['PROJECT.json', ...authorityDocs, 'scripts/', 'contracts/', 'work/', '.github/', 'docs/']);
+  const inControlPlane = (f) => [...controlPlane].some((c) => f === c || f.startsWith(c.replace(/\/$/, '') + '/'));
 
-  // 检查 A：改权威文档必须同 PR 改 PROJECT.json
-  const docChanged = changed.filter((f) => controlPlane.has(norm(f)) && norm(f) !== 'PROJECT.json');
+  // 检查 A：改权威文档必须同 PR 改 PROJECT.json（仅 4 个权威文档）
+  const docChanged = changed.map(norm).filter((f) => authorityDocs.has(f));
   if (docChanged.length > 0 && !changed.map(norm).includes('PROJECT.json')) {
     errors.push(`权威文档变更未同步改 PROJECT.json: ${docChanged.join(', ')}`);
   }
 
   // 检查 B：分权 diff 归属（仅 PR 上下文——有 PR body 时；push 事件无 body，跳过）
   if (m.enforcement && m.enforcement.file_ownership && prBody.trim()) {
-    const pathsMatch = prBody.match(/<!--\s*gov:paths\s*=\s*(.*?)\s*-->/);
-    const declared = (pathsMatch?.[1] || '').split(',').map((s) => s.trim()).filter(Boolean).map(norm);
-    if (declared.length === 0) {
+    const role = (prBody.match(/<!--\s*gov:role\s*=\s*(\S+)\s*-->/)?.[1] || '').toLowerCase();
+    const iwp = prBody.match(/<!--\s*gov:iwp\s*=\s*(\S+)\s*-->/)?.[1] || '';
+    const declared = (prBody.match(/<!--\s*gov:paths\s*=\s*(.*?)\s*-->/)?.[1] || '')
+      .split(',').map((s) => s.trim()).filter(Boolean).map(norm);
+    const isArch = role.includes('arch');
+
+    const cpChanged = changed.map(norm).filter((f) => inControlPlane(f));
+    const implChanged = changed.map(norm).filter((f) => !inControlPlane(f));
+
+    // B1：非架构角色不得改控制面文件
+    if (!isArch && cpChanged.length > 0) {
+      errors.push(`越权改动控制面文件: ${cpChanged.join(', ')}（角色=${role || '未声明'}）`);
+    }
+    // B2：实现文件必须在声明路径内
+    if (implChanged.length > 0 && declared.length === 0) {
       errors.push('PR 未声明 gov:paths（分权硬约束开）');
-    } else {
-      for (const f of changed) {
-        const nf = norm(f);
-        if (controlPlane.has(nf)) continue; // 控制面文件由检查 A + 角色纪律约束
-        if (!declared.some((d) => nf === d || nf.startsWith(d.replace(/\/$/, '') + '/'))) {
-          errors.push(`越权改动（不在声明路径内）: ${nf}`);
+    }
+    for (const f of implChanged) {
+      if (!declared.some((d) => f === d || f.startsWith(d.replace(/\/$/, '') + '/'))) {
+        errors.push(`越权改动（不在声明路径内）: ${f}`);
+      }
+    }
+    // B3：实施/验证角色的声明路径必须绑定 manifest 的 file_ownership
+    if (!isArch) {
+      const wp = (m.effective?.work_packages || []).find((w) => w.id === iwp);
+      if (!wp) {
+        if (iwp || implChanged.length > 0) errors.push(`PR 声明的 gov:iwp 未在 manifest 登记: ${iwp || '(空)'}`);
+      } else {
+        const owned = (wp.file_ownership || []).flatMap((o) => (o.paths || []).map(norm));
+        for (const d of declared) {
+          const ok = owned.some((p) => d === p || d.startsWith(p.replace(/\/$/, '') + '/') || p.startsWith(d.replace(/\/$/, '') + '/'));
+          if (!ok) errors.push(`声明路径不在 IWP ${iwp} 的 file_ownership 内: ${d}`);
         }
       }
     }
