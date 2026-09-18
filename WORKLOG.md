@@ -22,3 +22,10 @@
 - Evidence: PROJECT.json, DECISIONS.md D-004
 - Result: 治理等级 L2，环境/组件已声明，待部署
 - Next: 部署到 229 并验证
+
+### 2026-09-18 | W-002 | DONE
+- Actor: 架构AI
+- Scope: 部署到 125.77.25.229 + 公网验证
+- Evidence: http://125.77.25.229:3000/, work/verifications/W-002/verification.md, pm2(asset-ledger) online
+- Result: 公网可访问（healthz ok、看板可开、读写正常），W-002 DONE
+- Next: 无（L2 部署闭环）

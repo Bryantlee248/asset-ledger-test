@@ -8,10 +8,8 @@
   },
   "state": {
     "current_gate": "G0",
-    "active_work_items": [
-      "W-002"
-    ],
-    "next_work_item": "W-002"
+    "active_work_items": [],
+    "next_work_item": null
   },
   "authority": {
     "governance": "GOVERNANCE.md",
