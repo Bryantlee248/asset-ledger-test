@@ -8,10 +8,8 @@
   },
   "state": {
     "current_gate": "G0",
-    "active_work_items": [
-      "W-001"
-    ],
-    "next_work_item": "W-001"
+    "active_work_items": [],
+    "next_work_item": null
   },
   "authority": {
     "governance": "GOVERNANCE.md",
@@ -52,7 +50,7 @@
       {
         "id": "IWP-001",
         "roadmap_id": "W-001",
-        "status": "APPROVED",
+        "status": "CLOSED",
         "approval": "PR#3",
         "primary": "实施AI",
         "verifier": "验证AI",
