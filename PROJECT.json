@@ -3,13 +3,15 @@
   "project": {
     "id": "asset-ledger-test",
     "name": "Asset Ledger Test",
-    "governance_level": "L1",
+    "governance_level": "L2",
     "lifecycle": "poc"
   },
   "state": {
     "current_gate": "G0",
-    "active_work_items": [],
-    "next_work_item": null
+    "active_work_items": [
+      "W-002"
+    ],
+    "next_work_item": "W-002"
   },
   "authority": {
     "governance": "GOVERNANCE.md",
@@ -42,6 +44,11 @@
       },
       {
         "id": "D-003",
+        "status": "accepted",
+        "supersedes": []
+      },
+      {
+        "id": "D-004",
         "status": "accepted",
         "supersedes": []
       }
@@ -98,5 +105,20 @@
       "approval": null
     }
   ],
-  "superseded": []
+  "superseded": [],
+  "environments": [
+    {
+      "id": "SRV-229",
+      "purpose": "远程部署演示环境（Ubuntu 22.04 + pm2 + Node 22）",
+      "status": "active",
+      "data_class": "nonproduction"
+    }
+  ],
+  "components": [
+    {
+      "id": "ASSET-LEDGER",
+      "role": "资产台账 API + 只读看板",
+      "status": "approved"
+    }
+  ]
 }
