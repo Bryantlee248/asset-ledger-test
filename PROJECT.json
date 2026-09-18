@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "project": { "id": "asset-ledger-test", "name": "Asset Ledger Test", "governance_level": "L1", "lifecycle": "poc" },
+  "state": { "current_gate": "G0", "active_work_items": [], "next_work_item": "W-001" },
+  "authority": {
+    "governance": "GOVERNANCE.md",
+    "roadmap": "ROADMAP.md",
+    "decisions": "DECISIONS.md",
+    "worklog": "WORKLOG.md",
+    "human_authorizer": "Bryantlee248"
+  },
+  "roles": { "architecture": "架构AI", "delivery": ["实施AI"], "verifier": "验证AI" },
+  "enforcement": { "file_ownership": true },
+  "effective": {
+    "decisions": [ { "id": "D-001", "status": "accepted", "supersedes": [] } ],
+    "work_packages": [],
+    "artifacts": []
+  },
+  "gates": [
+    { "id": "G0", "status": "planned", "approval": null },
+    { "id": "G1", "status": "planned", "approval": null },
+    { "id": "G2", "status": "planned", "approval": null },
+    { "id": "G3", "status": "planned", "approval": null },
+    { "id": "G4", "status": "planned", "approval": null }
+  ],
+  "superseded": []
+}
