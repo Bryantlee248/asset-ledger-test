@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Asset Ledger API
+  version: 1.0.0
+  description: 资产台账最小垂直切片（合成数据）
+paths:
+  /healthz:
+    get:
+      summary: 健康检查
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+  /assets:
+    get:
+      summary: 资产列表
+      responses:
+        '200':
+          description: 资产数组
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+    post:
+      summary: 创建资产
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetInput'
+      responses:
+        '201':
+          description: 已创建
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '400':
+          description: 校验失败
+  /assets/{id}:
+    get:
+      summary: 资产详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 资产
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '404':
+          description: 不存在
+components:
+  schemas:
+    AssetInput:
+      type: object
+      required: [name, category]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        category:
+          type: string
+          enum: [server, network, storage, application]
+        owner:
+          type: string
+        status:
+          type: string
+          enum: [active, retired, unknown]
+    Asset:
+      allOf:
+        - $ref: '#/components/schemas/AssetInput'
+        - type: object
+          required: [id, createdAt]
+          properties:
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
