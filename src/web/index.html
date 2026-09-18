@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>Asset Ledger</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border: 1px solid #ccc; padding: .4rem .6rem; text-align: left; }
+    .muted { color: #888; }
+  </style>
+</head>
+<body>
+  <h1>Asset Ledger（只读看板）</h1>
+  <form id="create">
+    <input name="name" placeholder="名称" required>
+    <select name="category">
+      <option value="server">server</option>
+      <option value="network">network</option>
+      <option value="storage">storage</option>
+      <option value="application">application</option>
+    </select>
+    <input name="owner" placeholder="负责人">
+    <button type="submit">创建</button>
+  </form>
+  <table>
+    <thead><tr><th>ID</th><th>名称</th><th>类别</th><th>负责人</th><th>状态</th><th>创建时间</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p id="msg" class="muted"></p>
+  <script src="/app.js"></script>
+</body>
+</html>
